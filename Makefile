@@ -34,8 +34,14 @@ build_broker:
 	cd ../broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
 	@echo "Done!"
 
+## build_front: builds the frone end binary
+build_front:
+	@echo "Building front end binary..."
+	cd ../front-end && env CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} ./cmd/web
+	@echo "Done!"
+
 ## start: starts the front end
-start:
+start: build_front
 	@echo "Starting front-end..."
 	cd ../front-end && ./${FRONT_END_BINARY} &
 
@@ -43,3 +49,4 @@ start:
 stop:
 	@echo "Stopping front end..."
 	@-pkill -SIGTERM -f "./${FRONT_END_BINARY}"
+	@echo "Stopped front end!"
